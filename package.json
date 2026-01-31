@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://yaseenSamad.github.io/yaseen-mohamed-portfolio",
+  "homepage": "https://yaseensamad.github.io",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
