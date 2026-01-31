@@ -1,0 +1,70 @@
+.core-competencies {
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+}
+
+.competencies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.competency-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  background-color: var(--gray-lightest);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.competency-item:hover {
+  background-color: var(--black);
+  transform: translateX(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.competency-item:hover .competency-check {
+  color: var(--white);
+  background-color: transparent;
+}
+
+.competency-item:hover .competency-text {
+  color: var(--white);
+}
+
+.competency-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--black);
+  background-color: var(--white);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.competency-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--gray-medium);
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .competencies-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .competency-item {
+    padding: 16px;
+  }
+}

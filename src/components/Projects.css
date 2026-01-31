@@ -1,0 +1,123 @@
+.projects {
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+}
+
+.projects-section,
+.achievements-section {
+  margin-bottom: 64px;
+}
+
+.achievements-section {
+  margin-bottom: 0;
+}
+
+.subsection-title {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--black);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.project-item {
+  background-color: var(--gray-lightest);
+  padding: 28px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border-top: 3px solid var(--black);
+}
+
+.project-item:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.project-item-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--black);
+}
+
+.project-item-tech {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--gray-light);
+  margin-bottom: 12px;
+}
+
+.project-item-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--gray-medium);
+}
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.achievement-item {
+  background-color: var(--white);
+  padding: 32px;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid var(--gray-lightest);
+  transition: all 0.3s ease;
+}
+
+.achievement-item:hover {
+  border-color: var(--black);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.achievement-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.achievement-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--black);
+}
+
+.achievement-description {
+  font-size: 1rem;
+  color: var(--gray-medium);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .projects-grid,
+  .achievements-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .subsection-title {
+    font-size: 1.75rem;
+  }
+
+  .project-item {
+    padding: 24px;
+  }
+
+  .achievement-item {
+    padding: 24px;
+  }
+}
