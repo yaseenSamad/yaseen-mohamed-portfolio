@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import './Education.css'
 
 const Education = () => {
@@ -28,13 +29,34 @@ const Education = () => {
     }
   ]
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        delay: i * 0.1,
+      },
+    }),
+  }
+
   return (
     <section id="education" className="education">
       <div className="container">
         <h2 className="section-title">Education</h2>
         <div className="education-grid">
           {education.map((edu, index) => (
-            <div key={index} className="education-card">
+            <motion.div
+              key={index}
+              className="education-card"
+              custom={index}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              whileHover={{ y: -4 }}
+            >
               <div className="education-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
@@ -45,7 +67,7 @@ const Education = () => {
               <p className="education-institution">{edu.institution}</p>
               <p className="education-period">{edu.period}</p>
               <p className="education-grade">{edu.grade}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

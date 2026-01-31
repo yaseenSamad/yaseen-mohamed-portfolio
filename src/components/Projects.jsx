@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import './Projects.css'
 
 const Projects = () => {
@@ -29,51 +30,40 @@ const Projects = () => {
     }
   ]
 
-  const achievements = [
-    {
-      title: 'Second Prize',
-      description: 'Technopark Trivandrum Hackathon',
-      icon: '🏆'
-    },
-    {
-      title: 'Promotion to Software Engineer II',
-      description: 'Recognition for technical excellence and leadership',
-      icon: '⭐'
-    },
-    {
-      title: 'Mentored Junior Developers',
-      description: 'Guided and supported junior team members',
-      icon: '👥'
-    }
-  ]
+  const projectVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        delay: i * 0.1,
+      },
+    }),
+  }
 
   return (
     <section id="projects" className="projects">
       <div className="container">
-        <h2 className="section-title">Projects & Achievements</h2>
+        <h2 className="section-title">Projects</h2>
 
         <div className="projects-section">
-          <h3 className="subsection-title">Projects</h3>
           <div className="projects-grid">
             {projects.map((project, index) => (
-              <div key={index} className="project-item">
+              <motion.div
+                key={index}
+                className="project-item"
+                custom={index}
+                variants={projectVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                whileHover={{ y: -8, boxShadow: '0 12px 32px rgba(0, 0, 0, 0.15)' }}
+              >
                 <h4 className="project-item-name">{project.name}</h4>
                 <p className="project-item-tech">{project.tech}</p>
                 <p className="project-item-description">{project.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="achievements-section">
-          <h3 className="subsection-title">Achievements</h3>
-          <div className="achievements-grid">
-            {achievements.map((achievement, index) => (
-              <div key={index} className="achievement-item">
-                <div className="achievement-icon">{achievement.icon}</div>
-                <h4 className="achievement-title">{achievement.title}</h4>
-                <p className="achievement-description">{achievement.description}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

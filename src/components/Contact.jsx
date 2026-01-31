@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import './Contact.css'
 
 const Contact = () => {
@@ -37,7 +38,7 @@ const Contact = () => {
     {
       label: 'LinkedIn',
       value: 'Mohamed Yaseen PA',
-      link: 'https://www.linkedin.com/in/mohamed-yaseen-pa',
+      link: 'https://www.linkedin.com/in/yaseen-mohamed-a28414254',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
@@ -48,8 +49,8 @@ const Contact = () => {
     },
     {
       label: 'GitHub',
-      value: 'mohamed-yaseen-pa',
-      link: 'https://github.com/mohamed-yaseen-pa',
+      value: 'yaseenSamad',
+      link: 'https://github.com/yaseenSamad',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
@@ -58,7 +59,19 @@ const Contact = () => {
     }
   ]
 
-  const languages = ['English', 'Malayalam', 'Hindi']
+  const languages = ['English', 'Malayalam']
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        delay: i * 0.1,
+      },
+    }),
+  }
 
   return (
     <section id="contact" className="contact">
@@ -67,7 +80,16 @@ const Contact = () => {
         <div className="contact-content">
           <div className="contact-grid">
             {contactInfo.map((info, index) => (
-              <div key={index} className="contact-item">
+              <motion.div
+                key={index}
+                className="contact-item"
+                custom={index}
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                whileHover={{ y: -4 }}
+              >
                 <div className="contact-icon">{info.icon}</div>
                 <div className="contact-details">
                   <p className="contact-label">{info.label}</p>
@@ -84,25 +106,42 @@ const Contact = () => {
                     <p className="contact-value">{info.value}</p>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
-          <div className="languages-section">
+          <motion.div
+            className="languages-section"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
             <h3 className="languages-title">Languages</h3>
             <div className="languages-list">
               {languages.map((language, index) => (
-                <span key={index} className="language-tag">
+                <motion.span
+                  key={index}
+                  className="language-tag"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  transition={{ duration: 0.3 }}
+                >
                   {language}
-                </span>
+                </motion.span>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="contact-footer">
+        <motion.div
+          className="contact-footer"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          viewport={{ once: true }}
+        >
           <p>&copy; 2024 Mohamed Yaseen PA. All rights reserved.</p>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
