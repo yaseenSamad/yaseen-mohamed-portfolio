@@ -1,93 +1,132 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+import {
+  Code2, Layout, Server, Network, Database, Cpu, Cloud,
+  Lock, GitBranch, Wrench
+} from 'lucide-react'
+import { FigmaIcon, TrelloIcon } from './Icons'
 import './TechnicalSkills.css'
 
 const TechnicalSkills = () => {
+  const [selectedCategory, setSelectedCategory] = useState('All')
+
   const skillCategories = [
     {
-      category: 'Languages',
-      skills: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C', 'C++']
+      name: 'Languages',
+      icon: <Code2 size={20} />,
+      skills: ['Python', 'JavaScript', 'TypeScript', 'C', 'C++', 'HTML', 'CSS']
     },
     {
-      category: 'Frontend',
-      skills: ['Angular', 'React.js', 'Angular Material', 'HTML', 'CSS']
+      name: 'Frontend',
+      icon: <Layout size={20} />,
+      skills: ['Angular', 'React', 'Angular Material', 'Form.io']
     },
     {
-      category: 'Backend',
-      skills: ['Node.js', 'Express.js', 'FastAPI']
+      name: 'Backend',
+      icon: <Server size={20} />,
+      skills: ['FastAPI', 'Node.js', 'Express.js']
     },
     {
-      category: 'APIs',
-      skills: ['REST', 'GraphQL']
+      name: 'APIs',
+      icon: <Network size={20} />,
+      skills: ['REST', 'GraphQL', 'gRPC', 'MCP']
     },
     {
-      category: 'Databases',
-      skills: ['PostgreSQL', 'MySQL', 'MongoDB']
+      name: 'Databases',
+      icon: <Database size={20} />,
+      skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'immudb']
     },
     {
-      category: 'Automation & AI',
-      skills: ['Camunda', 'Form.io', 'LangGraph']
+      name: 'AI / LLM',
+      icon: <Cpu size={20} />,
+      skills: [
+        'LangGraph', 'LangChain', 'MCP', 'Agent Orchestration', 'RAG',
+        'Multi-Agent Systems', 'Claude (Anthropic)', 'Gemini', 'OpenAI', 'Grok'
+      ]
     },
     {
-      category: 'Tools',
-      skills: ['Git', 'GitHub', 'Docker']
+      name: 'Cloud / DevOps',
+      icon: <Cloud size={20} />,
+      skills: [
+        'AWS EC2', 'S3', 'RDS', 'CloudFront', 'Route 53', 'VPC',
+        'Docker', 'Docker Compose', 'Nginx', 'GitHub Actions'
+      ]
+    },
+    {
+      name: 'Security / Identity',
+      icon: <Lock size={20} />,
+      skills: ['Keycloak', 'Authentication', 'Authorization']
+    },
+    {
+      name: 'Version Control & Collab',
+      icon: <GitBranch size={20} />,
+      skills: ['Git', 'GitHub', 'Slack']
+    },
+    {
+      name: 'Project & Agile Tools',
+      icon: <TrelloIcon size={20} />,
+      skills: ['Jira', 'Scrum', 'Agile', 'Postman']
+    },
+    {
+      name: 'Design Collaboration',
+      icon: <FigmaIcon size={20} />,
+      skills: ['Figma']
+    },
+    {
+      name: 'Other Tools',
+      icon: <Wrench size={20} />,
+      skills: ['Camunda', 'MJML']
     }
   ]
 
-  const categoryVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        delay: i * 0.1,
-      },
-    }),
-  }
+  const categoryNames = ['All', ...skillCategories.map(c => c.name)]
 
-  const tagVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: (i) => ({
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.4,
-        delay: i * 0.05,
-      },
-    }),
-  }
+  const filteredCategories = selectedCategory === 'All'
+    ? skillCategories
+    : skillCategories.filter(c => c.name === selectedCategory)
 
   return (
-    <section id="skills" className="technical-skills">
+    <section id="skills" className="skills-section">
       <div className="container">
-        <h2 className="section-title">Technical Skills</h2>
-        <div className="skills-grid">
-          {skillCategories.map((category, index) => (
-            <motion.div
-              key={index}
-              className="skill-category"
-              custom={index}
-              variants={categoryVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              whileHover={{ x: 4 }}
+        <div className="section-header">
+          <span className="section-tag">Technical Proficiency</span>
+          <h2 className="section-title">Skills & Technologies</h2>
+          <p className="section-subtitle">
+            A comprehensive overview of programming languages, frameworks, cloud services, and AI technologies I leverage in production.
+          </p>
+        </div>
+
+        <div className="skills-filter-tabs">
+          {categoryNames.map((cat, idx) => (
+            <button
+              key={idx}
+              className={`filter-tab ${selectedCategory === cat ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(cat)}
             >
-              <h3 className="skill-category-title">{category.category}</h3>
-              <div className="skill-tags">
-                {category.skills.map((skill, sIndex) => (
-                  <motion.span
-                    key={sIndex}
-                    className="skill-tag"
-                    custom={sIndex}
-                    variants={tagVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                  >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <div className="skills-categories-grid">
+          {filteredCategories.map((category, catIdx) => (
+            <motion.div
+              key={catIdx}
+              className="skill-category-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: catIdx * 0.05 }}
+              viewport={{ once: true }}
+            >
+              <div className="category-header">
+                <div className="category-icon">{category.icon}</div>
+                <h3 className="category-title">{category.name}</h3>
+              </div>
+              <div className="skills-tags-container">
+                {category.skills.map((skill, sIdx) => (
+                  <span key={sIdx} className="skill-chip">
                     {skill}
-                  </motion.span>
+                  </span>
                 ))}
               </div>
             </motion.div>

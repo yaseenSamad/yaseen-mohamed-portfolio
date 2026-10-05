@@ -1,72 +1,84 @@
 import { motion } from 'framer-motion'
+import { GraduationCap, Award, Calendar, BookOpen } from 'lucide-react'
 import './Education.css'
 
 const Education = () => {
-  const education = [
+  const educationList = [
     {
       degree: 'Bachelor of Computer Applications (BCA)',
-      institution: 'IGNOU University',
-      period: '2022 - 2025',
-      grade: 'Pursuing'
+      institution: 'Indira Gandhi National Open University (IGNOU)',
+      period: '2023 – 2025',
+      grade: 'Result Awaited',
+      badge: 'Undergraduate Degree',
+      status: 'pursuing'
     },
     {
       degree: 'Diploma in Computer Engineering',
       institution: 'Kerala State Board of Technical Education',
-      period: '2020 - 2022',
-      grade: 'First Class with Distinction'
+      period: '2019 – 2022',
+      grade: 'CGPA: 8.47 (First Class with Distinction)',
+      badge: 'Technical Diploma',
+      status: 'completed'
     },
     {
       degree: 'Higher Secondary Education (Plus Two)',
       institution: 'Board of Higher Secondary Education, Kerala',
-      period: 'Completed',
-      grade: '2 A+, 4 A'
+      period: 'Computer Science Stream',
+      grade: 'Score: 89% (2 A+, 4 A)',
+      badge: 'Higher Secondary',
+      status: 'completed'
     },
     {
-      degree: 'Secondary School Education (SSLC)',
+      degree: 'Secondary School Leaving Certificate (SSLC)',
       institution: 'General Education Department, Kerala',
       period: 'Completed',
-      grade: 'Full A+'
+      grade: 'Grade: Full A+',
+      badge: 'High School',
+      status: 'completed'
     }
   ]
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        delay: i * 0.1,
-      },
-    }),
-  }
-
   return (
-    <section id="education" className="education">
+    <section id="education" className="education-section">
       <div className="container">
-        <h2 className="section-title">Education</h2>
+        <div className="section-header">
+          <span className="section-tag">Academic Background</span>
+          <h2 className="section-title">Education & Qualifications</h2>
+          <p className="section-subtitle">
+            Formal technical education in Computer Science and Engineering.
+          </p>
+        </div>
+
         <div className="education-grid">
-          {education.map((edu, index) => (
+          {educationList.map((edu, index) => (
             <motion.div
               key={index}
               className="education-card"
-              custom={index}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              whileHover={{ y: -4 }}
             >
-              <div className="education-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                  <path d="M6 12v5c3 3 9 3 12 0v-5" />
-                </svg>
+              <div className="edu-card-top">
+                <div className="edu-icon-box">
+                  <GraduationCap size={24} />
+                </div>
+                <span className={`edu-badge ${edu.status}`}>{edu.badge}</span>
               </div>
-              <h3 className="education-degree">{edu.degree}</h3>
-              <p className="education-institution">{edu.institution}</p>
-              <p className="education-period">{edu.period}</p>
-              <p className="education-grade">{edu.grade}</p>
+
+              <h3 className="edu-degree">{edu.degree}</h3>
+              <p className="edu-institution">{edu.institution}</p>
+
+              <div className="edu-meta-row">
+                <div className="edu-meta-item">
+                  <Calendar size={14} />
+                  <span>{edu.period}</span>
+                </div>
+                <div className="edu-meta-item grade-item">
+                  <Award size={14} />
+                  <span>{edu.grade}</span>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>

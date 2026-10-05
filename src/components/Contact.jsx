@@ -1,147 +1,249 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from 'lucide-react'
+import { GithubIcon, LinkedinIcon } from './Icons'
 import './Contact.css'
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  })
+  const [status, setStatus] = useState(null) // null | 'submitting' | 'success' | 'error'
+
   const contactInfo = [
     {
+      icon: <Mail size={22} />,
       label: 'Email',
       value: 'yasinsamad123@gmail.com',
-      link: 'mailto:yasinsamad123@gmail.com',
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-          <polyline points="22,6 12,13 2,6" />
-        </svg>
-      )
+      href: 'mailto:yasinsamad123@gmail.com'
     },
     {
+      icon: <Phone size={22} />,
       label: 'Phone',
-      value: '+91 9072-271-777',
-      link: 'tel:+919072271777',
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-        </svg>
-      )
+      value: '+91-9072271777',
+      href: 'tel:+919072271777'
     },
     {
+      icon: <MapPin size={22} />,
       label: 'Location',
-      value: 'Cochin, Kerala',
-      link: null,
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-          <circle cx="12" cy="10" r="3" />
-        </svg>
-      )
+      value: 'Kerala, India',
+      href: null
     },
     {
+      icon: <LinkedinIcon size={22} />,
       label: 'LinkedIn',
       value: 'Mohamed Yaseen PA',
-      link: 'https://www.linkedin.com/in/yaseen-mohamed-a28414254',
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-          <rect x="2" y="9" width="4" height="12" />
-          <circle cx="4" cy="4" r="2" />
-        </svg>
-      )
+      href: 'https://www.linkedin.com/in/yaseen-mohamed-a28414254/'
     },
     {
+      icon: <GithubIcon size={22} />,
       label: 'GitHub',
       value: 'yaseenSamad',
-      link: 'https://github.com/yaseenSamad',
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-        </svg>
-      )
+      href: 'https://github.com/yaseenSamad'
     }
   ]
 
-  const languages = ['English', 'Malayalam']
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        delay: i * 0.1,
-      },
-    }),
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!formData.name || !formData.email || !formData.message) {
+      setStatus('error')
+      return
+    }
+
+    setStatus('submitting')
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/yasinsamad123@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          _subject: formData.subject || `New Portfolio Message from ${formData.name}`,
+          message: formData.message,
+          _template: 'table'
+        })
+      })
+
+      const result = await response.json()
+
+      if (result.success === 'true' || result.success === true || response.ok) {
+        setStatus('success')
+        setFormData({ name: '', email: '', subject: '', message: '' })
+        setTimeout(() => setStatus(null), 6000)
+      } else {
+        // Fallback to mailto link
+        window.location.href = `mailto:yasinsamad123@gmail.com?subject=${encodeURIComponent(formData.subject || 'Portfolio Inquiry')}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`
+        setStatus('success')
+        setFormData({ name: '', email: '', subject: '', message: '' })
+        setTimeout(() => setStatus(null), 6000)
+      }
+    } catch (err) {
+      console.error('Contact form submission error:', err)
+      window.location.href = `mailto:yasinsamad123@gmail.com?subject=${encodeURIComponent(formData.subject || 'Portfolio Inquiry')}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`
+      setStatus('success')
+      setFormData({ name: '', email: '', subject: '', message: '' })
+      setTimeout(() => setStatus(null), 6000)
+    }
   }
 
   return (
-    <section id="contact" className="contact">
+    <section id="contact" className="contact-section">
       <div className="container">
-        <h2 className="section-title">Get In Touch</h2>
-        <div className="contact-content">
-          <div className="contact-grid">
-            {contactInfo.map((info, index) => (
-              <motion.div
-                key={index}
-                className="contact-item"
-                custom={index}
-                variants={itemVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                whileHover={{ y: -4 }}
-              >
-                <div className="contact-icon">{info.icon}</div>
-                <div className="contact-details">
-                  <p className="contact-label">{info.label}</p>
-                  {info.link ? (
-                    <a
-                      href={info.link}
-                      target={info.link.startsWith('http') ? '_blank' : undefined}
-                      rel={info.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      className="contact-value contact-link"
-                    >
-                      {info.value}
-                    </a>
-                  ) : (
-                    <p className="contact-value">{info.value}</p>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+        <div className="section-header">
+          <span className="section-tag">Get In Touch</span>
+          <h2 className="section-title">Let's Connect & Collaborate</h2>
+          <p className="section-subtitle">
+            Whether you have a new opportunity, an open-source collaboration, or an engineering inquiry, feel free to reach out!
+          </p>
+        </div>
 
+        <div className="contact-wrapper">
           <motion.div
-            className="languages-section"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
+            className="contact-info-column"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h3 className="languages-title">Languages</h3>
-            <div className="languages-list">
-              {languages.map((language, index) => (
-                <motion.span
-                  key={index}
-                  className="language-tag"
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {language}
-                </motion.span>
+            <h3 className="info-column-title">Contact Information</h3>
+            <p className="info-column-text">
+              I am open to full-time Software Engineering roles, AI Agent Orchestration projects, and technology consulting.
+            </p>
+
+            <div className="contact-cards-list">
+              {contactInfo.map((info, idx) => (
+                <div key={idx} className="contact-item-card">
+                  <div className="contact-item-icon">{info.icon}</div>
+                  <div className="contact-item-details">
+                    <span className="contact-item-label">{info.label}</span>
+                    {info.href ? (
+                      <a
+                        href={info.href}
+                        target={info.href.startsWith('http') ? '_blank' : undefined}
+                        rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="contact-item-value link"
+                      >
+                        {info.value}
+                      </a>
+                    ) : (
+                      <span className="contact-item-value">{info.value}</span>
+                    )}
+                  </div>
+                </div>
               ))}
             </div>
           </motion.div>
+
+          <motion.div
+            className="contact-form-column"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <form onSubmit={handleSubmit} className="contact-form">
+              <h3 className="form-title">Send Me a Message</h3>
+
+              {status === 'success' && (
+                <div className="form-alert alert-success">
+                  <CheckCircle2 size={20} />
+                  <span>Thank you! Your message has been sent successfully. I will get back to you shortly.</span>
+                </div>
+              )}
+
+              {status === 'error' && (
+                <div className="form-alert alert-error">
+                  <AlertCircle size={20} />
+                  <span>Please fill out all required fields before sending.</span>
+                </div>
+              )}
+
+              <div className="form-group-row">
+                <div className="form-group">
+                  <label htmlFor="name">Your Name *</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="email">Your Email *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="john@example.com"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="subject">Subject</label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  placeholder="Project Opportunity / Collaboration"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="message">Message *</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={5}
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Hi Yaseen, I'd like to discuss..."
+                  required
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                className="btn btn-primary submit-btn"
+                disabled={status === 'submitting'}
+              >
+                <Send size={18} />
+                <span>{status === 'submitting' ? 'Sending Message...' : 'Send Message'}</span>
+              </button>
+            </form>
+          </motion.div>
         </div>
 
-        <motion.div
-          className="contact-footer"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          viewport={{ once: true }}
-        >
-          <p>&copy; 2024 Mohamed Yaseen PA. All rights reserved.</p>
-        </motion.div>
+        <footer className="footer">
+          <div className="footer-content">
+            <p>&copy; {new Date().getFullYear()} Mohamed Yaseen PA. Built with React & Modern Web Standards.</p>
+            <div className="footer-links">
+              <a href="https://github.com/yaseenSamad" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <span>•</span>
+              <a href="https://www.linkedin.com/in/yaseen-mohamed-a28414254/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+          </div>
+        </footer>
       </div>
     </section>
   )

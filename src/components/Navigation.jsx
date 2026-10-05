@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
+import { Sun, Moon, Menu, X, Code2 } from 'lucide-react'
 import './Navigation.css'
 
-const Navigation = ({ activeSection }) => {
+const Navigation = ({ theme, toggleTheme, activeSection }) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      setIsScrolled(window.scrollY > 40)
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -15,13 +16,13 @@ const Navigation = ({ activeSection }) => {
   }, [])
 
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'summary', label: 'Summary' },
-    { id: 'experience', label: 'Experience' },
-    { id: 'education', label: 'Education' },
-    { id: 'projects', label: 'Projects' },
+    { id: 'hero', label: 'Home' },
+    { id: 'about', label: 'About' },
     { id: 'skills', label: 'Skills' },
-    { id: 'competencies', label: 'Competencies' },
+    { id: 'experience', label: 'Experience' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'education', label: 'Education' },
+    { id: 'prof-dev', label: 'Development' },
     { id: 'contact', label: 'Contact' }
   ]
 
@@ -34,36 +35,52 @@ const Navigation = ({ activeSection }) => {
   }
 
   return (
-    <nav className={`navigation ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="nav-container">
-        <div className="nav-logo" onClick={() => scrollToSection('home')}>
-          Mohamed Yaseen PA
+    <header className={`navigation-header ${isScrolled ? 'scrolled' : ''}`}>
+      <div className="container nav-container">
+        <div className="nav-brand" onClick={() => scrollToSection('hero')}>
+          <div className="brand-icon">
+            <Code2 size={22} className="brand-svg" />
+          </div>
+          <span className="brand-name">
+            Yaseen<span className="brand-dot">.dev</span>
+          </span>
         </div>
 
-        <button
-          className="mobile-menu-toggle"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        <nav className={`nav-menu ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+          <ul className="nav-links">
+            {navItems.map((item) => (
+              <li key={item.id}>
+                <button
+                  className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
+                  onClick={() => scrollToSection(item.id)}
+                >
+                  {item.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-        <ul className={`nav-menu ${isMobileMenuOpen ? 'open' : ''}`}>
-          {navItems.map(item => (
-            <li key={item.id}>
-              <button
-                className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
-                onClick={() => scrollToSection(item.id)}
-              >
-                {item.label}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="nav-actions">
+          <button
+            className="theme-toggle-btn"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} mode`}
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+
+          <button
+            className="mobile-toggle-btn"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle navigation menu"
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
-    </nav>
+    </header>
   )
 }
 
